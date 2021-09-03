@@ -36,6 +36,10 @@ const CreditCard = () => {
                 }, 3000)
             }
         }
+
+        if(!hasError) {
+            localStorage.setItem('card', JSON.stringify(values));
+        }
     }
 
     return (
