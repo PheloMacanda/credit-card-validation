@@ -54,7 +54,6 @@ const ModalComponent = (props:IProps) => {
                 ariaHideApp={false}
             >
                 <h2 ref={(_subtitle) => (subtitle = _subtitle)}>{title}</h2>
-                {/* <button onClick={closeModal}>close</button> */}
                 <div>
                     {children ? children.map((child) => {
                         return (
