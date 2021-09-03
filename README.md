@@ -7,3 +7,8 @@ If using npm: 1) npm install
 
 If using yarn: 1) yarn
                2) yarn start
+            
+
+To Run the test cases.
+
+Use npm run jest or yarn jest

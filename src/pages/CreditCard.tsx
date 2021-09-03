@@ -13,9 +13,20 @@ import './CreditCard.css';
 
 const sleep = (ms: any) => new Promise((resolve: any) => setTimeout(resolve, ms));
 
+function containsObject(obj:any, list:any[]) {
+    var i;
+    for (i = 0; i < list.length; i++) {
+        if (list[i] === obj) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 const CreditCard = () => {
 
-    const creditCards = localStorage.getItem('cards');
+    const creditCards = JSON.parse(localStorage.getItem('credit-cards') || '[]') || [];
 
     const [hasError, setError] = useState(false);
 
@@ -37,8 +48,17 @@ const CreditCard = () => {
             }
         }
 
-        if(!hasError) {
+        if (!hasError) {
             localStorage.setItem('card', JSON.stringify(values));
+
+            if(containsObject(values, creditCards)) {
+                window.alert("Credit Card Exists");
+            }
+            else {
+                creditCards.push(values);
+                localStorage.setItem('credit-cards', JSON.stringify(creditCards));
+            }
+            
         }
     }
 
@@ -47,9 +67,9 @@ const CreditCard = () => {
             <h1>Credit Card Validation - Rank Interactive Tech Assesment</h1>
             <h2>Enter your credit card details below..</h2>
             <div>
-               <button className="config-btn"><a style={{color:'inherit', textDecorationLine: 'none', marginTop: '3px'}} href="/configure">Configure Countries</a></button> 
+                <button className="config-btn"><a style={{ color: 'inherit', textDecorationLine: 'none', marginTop: '3px' }} href="/configure">Configure Countries</a></button>
             </div>
-            
+
             <Form
                 onSubmit={onSubmit}
                 render={({
@@ -114,7 +134,7 @@ const CreditCard = () => {
                                 >
                                     <option placeholder="Select Country" />
                                     {country_list.map((country) => {
-                                        return (<option value={country.name}>{country.name}</option>);
+                                        return (<option value={country.name} key={country.code}>{country.name}</option>);
                                     })}
                                 </Field>
                             </div>
