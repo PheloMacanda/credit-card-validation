@@ -9,10 +9,13 @@ import {
     formatCVC,
     formatExpirationDate
 } from '../utils/cardUtils';
+import './CreditCard.css';
 
 const sleep = (ms: any) => new Promise((resolve: any) => setTimeout(resolve, ms));
 
 const CreditCard = () => {
+
+    const creditCards = localStorage.getItem('cards');
 
     const [hasError, setError] = useState(false);
 
@@ -39,7 +42,10 @@ const CreditCard = () => {
         <Styles>
             <h1>Credit Card Validation - Rank Interactive Tech Assesment</h1>
             <h2>Enter your credit card details below..</h2>
-
+            <div>
+               <button className="config-btn"><a style={{color:'inherit', textDecorationLine: 'none', marginTop: '3px'}} href="/configure">Configure Countries</a></button> 
+            </div>
+            
             <Form
                 onSubmit={onSubmit}
                 render={({
