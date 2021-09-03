@@ -12,7 +12,19 @@ const customStyles = {
     },
 };
 
-const ModalComponent = () => {
+export interface IProps {
+    btnName: string
+    title: string
+    children?: any[]
+}
+
+const ModalComponent = (props:IProps) => {
+
+    const {
+        btnName,
+        title,
+        children
+    } = props;
 
     let subtitle: any;
     const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -32,24 +44,24 @@ const ModalComponent = () => {
 
     return (
         <div>
-            <button style={{ width: '150px'}} onClick={openModal}>Show Banned Countries</button>
+            <button style={{ width: '150px'}} onClick={openModal}>{btnName}</button>
             <Modal
                 isOpen={modalIsOpen}
                 onAfterOpen={afterOpenModal}
                 onRequestClose={closeModal}
                 style={customStyles}
-                contentLabel="Example Modal"
+                contentLabel={title}
+                ariaHideApp={false}
             >
-                <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
-                <button onClick={closeModal}>close</button>
-                <div>I am a modal</div>
-                <form>
-                    <input />
-                    <button>tab navigation</button>
-                    <button>stays</button>
-                    <button>inside</button>
-                    <button>the modal</button>
-                </form>
+                <h2 ref={(_subtitle) => (subtitle = _subtitle)}>{title}</h2>
+                {/* <button onClick={closeModal}>close</button> */}
+                <div>
+                    {children ? children.map((child) => {
+                        return (
+                            <p style={{textAlign: 'center'}} key={child.code}>{child.name}</p>
+                        );
+                    }): null}
+                </div>
             </Modal>
         </div>
     );

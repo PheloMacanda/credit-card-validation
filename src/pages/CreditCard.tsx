@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import Styles from '../components/Card/CardStyles';
 import { Form, Field } from 'react-final-form';
 import Card from '../components/Card/Card';
-import { country_list } from '../constants/countries';
+import { country_list, banned_country_list } from '../constants/countries';
 import Modal from '../components/Modal/Modal';
 import {
     formatCreditCardNumber,
@@ -11,12 +12,28 @@ import {
 
 const sleep = (ms: any) => new Promise((resolve: any) => setTimeout(resolve, ms));
 
-const onSubmit = async (values: any) => {
-    await sleep(300)
-    // window.alert(JSON.stringify(values));
-}
-
 const CreditCard = () => {
+
+    const [hasError, setError] = useState(false);
+
+    const onSubmit = async (values: any) => {
+        const banned_names = [];
+
+        await sleep(300)
+        if (values.country) {
+            for (var i = 0; i < banned_country_list.length; i++) {
+                banned_names.push(banned_country_list[i].name);
+            }
+
+            if (banned_names.includes(values.country)) {
+                setError(true);
+
+                setTimeout(() => {
+                    setError(false);
+                }, 3000)
+            }
+        }
+    }
 
     return (
         <Styles>
@@ -32,7 +49,7 @@ const CreditCard = () => {
                     pristine,
                     values,
                     active
-                }:any) => {
+                }: any) => {
                     return (
                         <form onSubmit={handleSubmit}>
                             <Card
@@ -79,20 +96,28 @@ const CreditCard = () => {
                                 />
                             </div>
                             <div>
-                                <Field 
+                                <Field
                                     name="country"
                                     component="select"
                                     placeholder="Country"
+                                    value={values.country}
                                 >
                                     <option placeholder="Select Country" />
                                     {country_list.map((country) => {
-                                        return (<option value={country.code}>{country.name}</option>);
+                                        return (<option value={country.name}>{country.name}</option>);
                                     })}
                                 </Field>
                             </div>
-                            <div style={{ paddingLeft: '20px'}}>
-                                <label style={{width: '100%'}}>Banned Countries</label>
-                                <Modal />
+                            <div>
+                                {hasError && <p style={{ color: 'red', fontWeight: 'bold' }}>Cannot store details, {values.country} is banned.</p>}
+                            </div>
+                            <div style={{ paddingLeft: '20px' }}>
+                                <label style={{ width: '100%' }}>Banned Countries</label>
+                                <Modal
+                                    title="Banned Countries"
+                                    btnName="Show Banned Countries"
+                                    children={banned_country_list}
+                                />
                             </div>
                             <div className="buttons">
                                 <button type="submit" disabled={submitting}>
@@ -107,7 +132,7 @@ const CreditCard = () => {
                                 </button>
                             </div>
                             <h2>Values</h2>
-                            <pre style={{ overflow: 'scroll'}}>{JSON.stringify(values)}</pre>
+                            <pre style={{ overflow: 'scroll' }}>{JSON.stringify(values)}</pre>
                         </form>
                     )
                 }}

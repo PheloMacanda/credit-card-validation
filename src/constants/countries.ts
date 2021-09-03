@@ -243,3 +243,16 @@ export const country_list = [
     {"name": "Zambia", "code": "ZM"},
     {"name": "Zimbabwe", "code": "ZW"}
 ];
+
+export const banned_country_list = [
+    {"name": "Afghanistan", "code": "AF"},
+    {"name": "Egypt", "code": "EG"},
+    {"name": "Turkey", "code": "TR"},
+    {"name": "Guinea", "code": "GN"},
+    {"name": "Iraq", "code": "IQ"},
+    {"name": "Russian Federation", "code": "RU"},
+    {"name": "Somalia", "code": "SO"},
+    {"name": "Mali", "code": "ML"},
+    {"name": "China", "code": "CN"},
+    {"name": "Tunisia", "code": "TN"}
+]
